@@ -8,9 +8,8 @@ import zio.{Config, Unsafe, ZIO}
 
 case class ConnectionPool(initialSize: Int, validationQuery: String)
 
-object ReferenceConfig extends App {
-
-  private val connectionPoolConfig: Config[ConnectionPool] =
+object ConnectionPool:
+  val config: Config[ConnectionPool] =
     Config.int("initial-size").zip(
         Config.string("validation-query")
       )
@@ -18,12 +17,17 @@ object ReferenceConfig extends App {
       .nested("persistence")
       .to[ConnectionPool]
 
+end ConnectionPool
+
+object ReferenceConfig extends App {
+
+
   val io: ZIO[Any, Error, ConnectionPool] =
-    ZIO.config(connectionPoolConfig)
+    ZIO.config(ConnectionPool.config)
 
   private val app =
     for {
-      config <- ZIO.config(connectionPoolConfig)
+      config <- ZIO.config(ConnectionPool.config)
         .withConfigProvider(
           TypesafeConfigProvider.fromResourcePath(false)
         )

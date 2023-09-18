@@ -1,4 +1,7 @@
-import BuildHelper._
+import BuildHelper.*
+import sbt.Keys.libraryDependencies
+
+import scala.collection.Seq
 
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
@@ -8,10 +11,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "zio-training"
   )
-  .settings(
-    macroDefinitionSettings
-  )
-  .aggregate(config, configApp)
+  .aggregate(config, configApp, loggingApp)
 
 
 lazy val config = (project in file("config"))
@@ -31,3 +31,14 @@ lazy val configApp = (project in file("config_app"))
     name := "zio-config-app"
   )
   .dependsOn(config)
+
+lazy val loggingApp = (project in file("logging_app"))
+  .settings(
+    name := "zio-logging-app",
+    libraryDependencies ++= Seq(
+      "org.slf4j" % "slf4j-simple" % "2.0.5",
+      "dev.zio" %% "zio-logging"       % "2.1.12",
+      "dev.zio" %% "zio-logging-slf4j" % "2.1.12"
+    )
+  )
+  .dependsOn(config, configApp)
