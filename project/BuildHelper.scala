@@ -19,8 +19,8 @@ object BuildHelper {
 //
 //  val ScalaDotty: String                 = versions("3")
 
-  def macroDefinitionSettings = Seq(
-    scalacOptions += "-language:experimental.macros",
+//  def macroDefinitionSettings = Seq(
+//    scalacOptions += "-language:experimental.macros",
 //    libraryDependencies ++= {
 //      if (scalaVersion.value == ScalaDotty) Seq()
 //      else
@@ -29,6 +29,6 @@ object BuildHelper {
 //          "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided"
 //        )
 //    }
-  )
+//  )
 
 }

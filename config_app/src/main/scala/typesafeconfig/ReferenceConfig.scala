@@ -10,8 +10,10 @@ case class ConnectionPool(initialSize: Int, validationQuery: String)
 
 object ReferenceConfig extends App {
 
-  val connectionPoolConfig: Config[ConnectionPool] =
-    (Config.int("initial-size").zip(Config.string("validation-query")))
+  private val connectionPoolConfig: Config[ConnectionPool] =
+    Config.int("initial-size").zip(
+        Config.string("validation-query")
+      )
       .nested("default-connection-pool")
       .nested("persistence")
       .to[ConnectionPool]
@@ -19,7 +21,7 @@ object ReferenceConfig extends App {
   val io: ZIO[Any, Error, ConnectionPool] =
     ZIO.config(connectionPoolConfig)
 
-  val app =
+  private val app =
     for {
       config <- ZIO.config(connectionPoolConfig)
         .withConfigProvider(
@@ -29,7 +31,7 @@ object ReferenceConfig extends App {
 
     } yield config
 
-  def run =
+  private def run =
     app
 
   println(
